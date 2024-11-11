@@ -1,0 +1,6 @@
+De los datos se eliminó la columna con el nombre de la fuente 
+De la matriz los valores que me representan mejor el numero son aquellos con un digito mayor a 200 (los datos llegan hasta 255)
+Los datos están balanceados, hay la misma cantidad de labels para cada uno de ellos. Separar el dev y held no genera problema 
+Para ver el mejor arbol, se hizo una permutacion con las opciones pedidas por el ejer 2 y 3 y se calculo la - 
+matriz de cada uno. Como crear esos datos tarda mucho, comenté esa parte y dejé en datos el resultado de cada una 
+posteriormente se evalúa el mejor performance y grafico la matriz de la mejor combinación 
