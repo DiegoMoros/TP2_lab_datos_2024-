@@ -1,0 +1,21 @@
+Pasra empezar se comenzo a ver el comportamiento general de losd atos, se usa la funcion describe e ifnor para copmprendr losd atos en ela specto general, tambien se intento usar la funcion de correlacion corr sin ebargo al ser tanto el conjutno de dato se descartop debido a que no funcioanba para comprneder correctamente
+
+luego de analizar un poco losa datos planteo lo siguiente:
+Motivo: Las imágenes de los dígitos son representadas por píxeles en una matriz 28x28 (784 atributos). No todos los píxeles tienen la misma importancia para identificar el dígito. El análisis de correlación y la visualización te ayudarán a identificar qué atributos (píxeles) tienen mayor relevancia.
+cree una funcion para guardar las imagenes en una carpeta, con el fin de comrender mejor su compartamiento
+
+Entonces:
+¿Cuáles parecen ser atributos relevantes para predecir el número al
+ que corresponde la imagen? ¿Cuáles no? ¿Creen que se pueden
+ descartar atributos?
+
+ al analizar algunas iamgnes nos podemos dar cuenta que algunos pixeles tienen mayor importanci a la hora de mostrar la imagen, por lo que no es necesarioe stuidar todos los 784 tributos
+plantemos un analisis usando un grafioc de barra para medir la correlatividad de los pixeles:
+ de este modo podemos conluir que podemos descartar algunos atributos y quedarnos solo con los que nos repserentente sigificativa mente la figura
+Siguiendo:
+ ¿Hay números que son más parecidos entre sí? Por ejemplo, ¿Qué es
+ más fácil de diferenciar: las imágenes correspondientes al dígito 1 de
+ las de el dígito 3, ó las del dígito 3 del dígito 8?
+
+ primero realziamos una analisis que muestre todos los numeros rterpsentados en los pizxeles, de est modo encotnramos 10 guiuras desde el 0 hasta el 9
+ de aqui podemos pensar que existe un parecido entre numeros dado a sus formas y angulos, 
