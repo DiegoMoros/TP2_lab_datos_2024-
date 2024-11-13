@@ -1,4 +1,4 @@
-Pasra empezar se comenzo a ver el comportamiento general de losd atos, se usa la funcion describe e ifnor para copmprendr losd atos en ela specto general, tambien se intento usar la funcion de correlacion corr sin ebargo al ser tanto el conjutno de dato se descartop debido a que no funcioanba para comprneder correctamente
+Pasra empezar se comenzo a ver el comportamiento general de losd atos, se usa la funcion describe e ifnor para copmprendr losd atos en ela specto general
 
 luego de analizar un poco losa datos planteo lo siguiente:
 Motivo: Las imágenes de los dígitos son representadas por píxeles en una matriz 28x28 (784 atributos). No todos los píxeles tienen la misma importancia para identificar el dígito. El análisis de correlación y la visualización te ayudarán a identificar qué atributos (píxeles) tienen mayor relevancia.

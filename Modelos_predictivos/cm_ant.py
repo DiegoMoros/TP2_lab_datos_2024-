@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Nov 10 12:52:06 2024
-
-@author: mgo20
-"""
-
 import re
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -15,9 +8,9 @@ from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.tree import DecisionTreeClassifier , plot_tree
 
 #%% Cargar los datos
-pixeles_completo = pd.read_csv('C:/Users/mgo20/OneDrive/Desktop/Data/plab/TP2_lab_datos_2024-/Datos/TMNIST_Data.csv')
+pixeles_completo = pd.read_csv(r'Datos\TMNIST_Data.csv')
 # Cargo el DataFrame de las matrices de cada combinación 
-resultado_combinacion = pd.read_csv('C:/Users/mgo20/OneDrive/Desktop/Data/plab/TP2_lab_datos_2024-/Datos/resultados_combinaciones.csv')
+resultado_combinacion = pd.read_csv(r'Datos\resultados_combinaciones.csv')
 
 #%% Quitar la fuente de pixeles
 pixeles = pixeles_completo.iloc[:, 1:]
