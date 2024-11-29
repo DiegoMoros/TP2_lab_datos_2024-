@@ -21,8 +21,8 @@ DATA_PATH = r"Datos\TMNIST_Data.csv"
 RESULTADOS = pd.read_csv(r'Datos\resultados_combinaciones.csv')
 pixeles = pd.read_csv(DATA_PATH)
 report_info = bd.inf_general(pixeles)
-#%%
-#Parte 1 analisis excploratorio
+# %%
+# Parte 1 analisis excploratorio
 print("Iniciamos el analisis del conjunto de datos TMNIST")
 
 print("Adjuntamos la información general del dataset, como  sus atributos y su información más relevante")
@@ -154,6 +154,7 @@ cmc.grafico_matrix_confusion(mejor_resultado["mejores_filas"])
 # Graficar el árbol de decisión
 mejor_modelo = cmc.grafico_de_decision(X_train, y_train)
 
+cmc.calcular_accuracy_y_graficar(RESULTADOS)
 # Evaluar el modelo en el conjunto de datos held-out (prueba)
 exactitud = cmc.grafico_matrix_confusion_held(pixeles, mejor_modelo)
 print(f"Exactitud en el conjunto Held-out: {exactitud:.4f}")
