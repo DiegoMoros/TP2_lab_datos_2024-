@@ -7,6 +7,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.tree import DecisionTreeClassifier , plot_tree
 from itertools import product
+import ast
 
 def dividir_datos(pixeles_completo):
     pixeles = pixeles_completo.iloc[:, 1:]
@@ -167,3 +168,69 @@ def grafico_matrix_confusion_held(pixeles_completo,mejor_modelo):
     plt.title("Matriz de Confusión en el Conjunto Held-out")
     plt.show()
     return exactitud
+
+def calcular_accuracy_y_graficar(df):
+    """
+    Calcula la exactitud desde una columna de matrices de confusión en un DataFrame,
+    guarda los resultados en un archivo de salida y genera un gráfico de tendencia entre 
+    la máxima profundidad (max_depth), el criterio (criterion) y la exactitud (accuracy).
+
+    Parámetros:
+    - df: DataFrame que contiene la columna 'confusion_matrix' con las matrices de confusión en formato string.
+    """
+    
+    def calcular_accuracy(conf_matrix_str):
+        """
+        Calcula la exactitud desde una matriz de confusión en formato de string.
+        """
+        # Limpiar el string de la matriz de confusión
+        conf_matrix_str = re.sub(r',+', ',', conf_matrix_str)  # Eliminar comas extra
+        conf_matrix_str = conf_matrix_str.strip()  # Eliminar espacios innecesarios
+
+        # Reemplazar las celdas vacías representadas por ",," con ceros
+        conf_matrix_str = re.sub(r',,*', ',0,', conf_matrix_str)
+
+        # Asegurarse de que no haya comas al principio o al final
+        conf_matrix_str = conf_matrix_str.strip(',')
+
+        # Reemplazar los espacios entre números por comas (en caso de que haya espacios)
+        conf_matrix_str = conf_matrix_str.replace(' ', ',')
+
+        conf_matrix_str = re.sub(r',,*', ',', conf_matrix_str)
+        # Intentar evaluar el string a una matriz de confusión
+
+        # Usamos ast.literal_eval para convertir la cadena en una lista
+        conf_matrix_str = conf_matrix_str.replace('[,', '[').replace(',]', ']')  # Corregir corchetes mal formateados
+        conf_matrix = np.array(ast.literal_eval(conf_matrix_str))
+
+        # Calcular la exactitud
+        correct_predictions = np.trace(conf_matrix)  # Suma de la diagonal
+        total_predictions = np.sum(conf_matrix)  # Suma de todos los valores
+        return correct_predictions / total_predictions
+
+    # Calcular la exactitud para cada fila de la columna 'confusion_matrix'
+    df['accuracy'] = df['confusion_matrix'].apply(calcular_accuracy)
+
+    # Ahora obtenemos la columna de 'max_depth' y 'criterion' y graficamos la comparación
+    plt.figure(figsize=(12, 6))
+
+    # Usamos un gráfico de dispersión para comparar max_depth con la exactitud
+    sns.scatterplot(x='max_depth', y='accuracy', hue='criterion', data=df, s=100, alpha=0.7)
+
+    # Añadir líneas de tendencia para cada valor de criterion
+    for criterion_value in df['criterion'].unique():
+        subset = df[df['criterion'] == criterion_value]
+        sns.lineplot(x='max_depth', y='accuracy', data=subset, label=f'Criterion: {criterion_value}', marker='o')
+
+    # Agregar etiquetas y título
+    plt.xlabel('Max Depth', fontsize=14)
+    plt.ylabel('Exactitud', fontsize=14)
+    plt.title('Comparación entre Max Depth, Criterion y Exactitud', fontsize=16)
+
+    # Mostrar la leyenda y la cuadrícula
+    plt.legend()
+    plt.grid(True)
+
+    # Ajustar el layout y mostrar el gráfico
+    plt.tight_layout()
+    plt.show()
