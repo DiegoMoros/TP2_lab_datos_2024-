@@ -144,7 +144,7 @@ def graficar_heatmap_exactitud(results_df):
 def graficar_exactitud_modelos_dataset(dataset, label_col, valores_k):
     """
     Compara la exactitud de un modelo KNN en datos de entrenamiento y prueba
-    para diferentes valores de k y visualiza los resultados con regresiones lineales.
+    para diferentes valores de k y visualiza los resultados conectando los puntos.
 
     Parámetros:
     - dataset: DataFrame o matriz que contiene los datos completos.
@@ -176,28 +176,13 @@ def graficar_exactitud_modelos_dataset(dataset, label_col, valores_k):
         Y_test_pred = model.predict(X_test)
         exactitud_test.append(accuracy_score(Y_test, Y_test_pred))
 
-    # Ajustar regresión lineal para exactitud de entrenamiento
-    reg_train = LinearRegression()
-    reg_train.fit(np.array(valores_k).reshape(-1, 1), exactitud_train)
-    pred_train = reg_train.predict(np.array(valores_k).reshape(-1, 1))
-
-    # Ajustar regresión lineal para exactitud de prueba
-    reg_test = LinearRegression()
-    reg_test.fit(np.array(valores_k).reshape(-1, 1), exactitud_test)
-    pred_test = reg_test.predict(np.array(valores_k).reshape(-1, 1))
-
     # Crear el gráfico
     plt.figure(figsize=(10, 6))
 
-    # Regresión lineal (entrenamiento)
-    plt.plot(valores_k, pred_train, label='Regresión Lineal (Train)', color='blue', linewidth=2)
-    # Regresión lineal (prueba)
-    plt.plot(valores_k, pred_test, label='Regresión Lineal (Test)', color='red', linewidth=2)
-
-    # Puntos exactitud (entrenamiento)
-    plt.scatter(valores_k, exactitud_train, color='blue', label='Exactitud (Train)', zorder=5)
-    # Puntos exactitud (prueba)
-    plt.scatter(valores_k, exactitud_test, color='red', label='Exactitud (Test)', zorder=5)
+    # Conectar puntos exactitud (entrenamiento)
+    plt.plot(valores_k, exactitud_train, label='Exactitud (Train)', color='blue', linewidth=2)
+    # Conectar puntos exactitud (prueba)
+    plt.plot(valores_k, exactitud_test, label='Exactitud (Test)', color='red', linewidth=2)
 
     # Personalización del gráfico
     plt.xlabel('Número de Vecinos (k)', fontsize=14)
