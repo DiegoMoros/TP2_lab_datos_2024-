@@ -5,6 +5,13 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score
 import numpy as np
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
 
 def reporte_clasificacion_binaria(pixeles_completo, combinacion_atributos):
     report_dict = {}
@@ -133,3 +140,71 @@ def graficar_heatmap_exactitud(results_df):
     plt.xlabel('Número de vecinos (k)', fontsize=14)
     plt.ylabel('Conjunto de atributos', fontsize=14)
     plt.show()
+
+def graficar_exactitud_modelos_dataset(dataset, label_col, valores_k):
+    """
+    Compara la exactitud de un modelo KNN en datos de entrenamiento y prueba
+    para diferentes valores de k y visualiza los resultados con regresiones lineales.
+
+    Parámetros:
+    - dataset: DataFrame o matriz que contiene los datos completos.
+    - label_col: Índice o nombre de la columna que contiene las etiquetas (clase o dígito).
+    - valores_k: Lista de valores de k para KNN.
+    """
+    # Separar características (X) y etiquetas (Y)
+    # Seleccionar solo las columnas numéricas
+    X = dataset.select_dtypes(include=[np.number]).drop(columns=[label_col]).values
+    Y = dataset[label_col].values  # Columna con las etiquetas
+    
+    # Dividir los datos en conjuntos de entrenamiento y prueba
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=42)
+    
+    # Listas para almacenar exactitudes
+    exactitud_train = []
+    exactitud_test = []
+
+    # Calcular exactitudes para diferentes valores de k
+    for k in valores_k:
+        model = KNeighborsClassifier(n_neighbors=k)
+        model.fit(X_train, Y_train)
+        
+        # Calcular exactitud en datos de entrenamiento
+        Y_train_pred = model.predict(X_train)
+        exactitud_train.append(accuracy_score(Y_train, Y_train_pred))
+        
+        # Calcular exactitud en datos de prueba
+        Y_test_pred = model.predict(X_test)
+        exactitud_test.append(accuracy_score(Y_test, Y_test_pred))
+
+    # Ajustar regresión lineal para exactitud de entrenamiento
+    reg_train = LinearRegression()
+    reg_train.fit(np.array(valores_k).reshape(-1, 1), exactitud_train)
+    pred_train = reg_train.predict(np.array(valores_k).reshape(-1, 1))
+
+    # Ajustar regresión lineal para exactitud de prueba
+    reg_test = LinearRegression()
+    reg_test.fit(np.array(valores_k).reshape(-1, 1), exactitud_test)
+    pred_test = reg_test.predict(np.array(valores_k).reshape(-1, 1))
+
+    # Crear el gráfico
+    plt.figure(figsize=(10, 6))
+
+    # Regresión lineal (entrenamiento)
+    plt.plot(valores_k, pred_train, label='Regresión Lineal (Train)', color='blue', linewidth=2)
+    # Regresión lineal (prueba)
+    plt.plot(valores_k, pred_test, label='Regresión Lineal (Test)', color='red', linewidth=2)
+
+    # Puntos exactitud (entrenamiento)
+    plt.scatter(valores_k, exactitud_train, color='blue', label='Exactitud (Train)', zorder=5)
+    # Puntos exactitud (prueba)
+    plt.scatter(valores_k, exactitud_test, color='red', label='Exactitud (Test)', zorder=5)
+
+    # Personalización del gráfico
+    plt.xlabel('Número de Vecinos (k)', fontsize=14)
+    plt.ylabel('Exactitud', fontsize=14)
+    plt.title('Exactitud del Modelo KNN para diferentes valores de k', fontsize=16)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+

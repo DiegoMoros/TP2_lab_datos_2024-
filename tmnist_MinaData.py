@@ -39,17 +39,19 @@ print(report_info['instancias'])
  descartar atributos?
 """
 bd.corr_pixel_for_tag(pixeles)
-
+bd.corr_pixel_for_tag(pixeles, method='spearman')
 """
  ¿Hay números que son más parecidos entre sí? Por ejemplo, ¿Qué es
  más fácil de diferenciar: las imágenes correspondientes al dígito 1 de
  las de el dígito 3, ó las del dígito 3 del dígito 8?
 """
 bd.show_pixel_for_tag(pixeles)
+bd.show_std_for_tag(pixeles)
 bd.comparar_clases_visualmente(pixeles,samples=10)
 bd.comparar_clases_visualmente(pixeles,1,4,samples=10)
 bd.comparar_clases_visualmente(pixeles,1,3,samples=10)
 bd.comparar_clases_visualmente(pixeles,2,5,samples=10)
+bd.comparar_clases_metricas(pixeles, digit1=3, digit2=8)
 """
 Tomen una de las clases, por ejemplo el dígito 0, ¿Son todas las
  imágenes muy similares entre sí?
@@ -57,10 +59,12 @@ Tomen una de las clases, por ejemplo el dígito 0, ¿Son todas las
 bd.mostrar_muestras(pixeles,samples=20)
 bd.promedio_desviacion(pixeles)
 bd.varianza_pixeles(pixeles)
-bd.variancia_intra_clase(pixeles)
+bd.variancia_intra_clase(pixeles)     
 bd.comparar_variancias(pixeles)
 bd.calcular_variancia_por_clase(pixeles,0)
-
+bd.comparar_variancia_unica(pixeles,0)
+bd.pixeles_relevantes(pixeles, digit=0, top_n=100)
+bd.plot_pixel_variability_and_position(pixeles, digit=0, top_n=100)
 print("Fin del analisis inicial")
 #%%
 #Parte 2 classificación_binaria
@@ -117,6 +121,9 @@ print(resultados_knn_k)
 
 # Graficar heatmap de exactitud
 cb.graficar_heatmap_exactitud(resultados_knn_k)
+
+valores_k = [1, 3, 5, 7, 10, 15, 20]
+cb.graficar_exactitud_modelos_dataset(pixeles, label_col='labels', valores_k=valores_k)
 print("Fin del proceso de modelado y aprendizaje usando clasificacion binaria")
 
 print("Iniciamos el proceso de modelado y aprendizaje usando clasificacion multiclase")
